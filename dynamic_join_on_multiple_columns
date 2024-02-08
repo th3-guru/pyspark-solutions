@@ -1,0 +1,10 @@
+// Dynamically join 2 dataframes on multiple columns from a list.
+// Also include a condition to make sure that the columns with string values match in case they have different cases
+join_cols = [list of cols] 
+df = df1.join( \
+          df2, \
+          [upper(df1[column]) == upper(df2[column]) \
+           if isinstance(df1.schema[column].dataType , StringType) \
+           else df1[column] == df2[column] \
+           for column in join_cols], "inner")\
+        .drop(*[df2[column] for column in join_cols])
